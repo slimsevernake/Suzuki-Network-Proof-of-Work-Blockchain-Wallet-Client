@@ -1,5 +1,12 @@
 import time
-from crypto_hash import crypto_hash
+from backend.utils.crypto_hash import crypto_hash
+
+GENESIS_DATA = {
+    "timestamp": 1,
+    "prev_hash": "genesis_prev_hash",
+    "hash": "genesis_hash",
+    "data": []
+}
 
 class Block:
     def __init__(self, timestamp, prev_hash, hash, data):
@@ -27,7 +34,13 @@ class Block:
 
     @staticmethod
     def genesis():
-        return Block(1, "genesis_prev_hash", "genesis_hash",[])
+        # return Block(
+        #     GENESIS_DATA["timestamp"],
+        #     GENESIS_DATA["prev_hash"],
+        #     GENESIS_DATA["hash"],
+        #     GENESIS_DATA["data"]
+        # )
+        return Block(**GENESIS_DATA)
 
 def main():
     genesis_block = Block.genesis()

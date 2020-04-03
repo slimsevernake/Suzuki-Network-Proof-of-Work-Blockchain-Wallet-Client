@@ -1,1 +1,3 @@
-primary-blockchain/__pycache__
+primary-blockchain/primary-env
+*cache__
+.vscode
