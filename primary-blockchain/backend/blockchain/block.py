@@ -1,5 +1,6 @@
 import time
 from backend.utils.crypto_hash import crypto_hash
+from backend.config import MINE_RATE
 
 GENESIS_DATA = {
     "timestamp": 1,
@@ -34,7 +35,7 @@ class Block:
     def mine_block(prev_block, data):
         timestamp = time.time_ns()
         prev_hash = prev_block.hash
-        difficulty = prev_block.difficulty
+        difficulty = Block.adjust_difficulty(prev_block, timestamp)
         nonce = 0
         hash = crypto_hash(timestamp, prev_hash, data, difficulty, nonce)
         
@@ -47,6 +48,20 @@ class Block:
     @staticmethod
     def genesis():
         return Block(**GENESIS_DATA)
+
+    @staticmethod
+    def adjust_difficulty(prev_block, current_block_timestamp):
+        """
+        Calculate adjusted difficulty contingent on global var MINE_RATE,
+        such that the difficulty is incremented/decremented to produce
+        a block-mining throughput of 1 block/second
+        """
+        if ((current_block_timestamp - prev_block.timestamp) < MINE_RATE):
+            return prev_block.difficulty + 1
+        # prevent difficulty from dropping below 0
+        if (prev_block.difficulty -1) > 0:
+            return prev_block.difficulty - 1
+        return 1
 
 def main():
     genesis_block = Block.genesis()
