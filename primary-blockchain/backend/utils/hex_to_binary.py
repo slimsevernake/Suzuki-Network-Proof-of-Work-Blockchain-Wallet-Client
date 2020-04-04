@@ -1,4 +1,4 @@
-from backend.utils.crypto_hash import crypto_hash
+from backend.utils.generate_hash import generate_hash
 
 HEX_TO_BINARY_CONVERSION_TABLE = {
     "0": "0000",
@@ -38,8 +38,8 @@ def main():
     original_num = int(binarynum, 2)
     print(f"original_num: {original_num}")
 
-    hex_to_binary_crypto_hash = hex_to_binary(crypto_hash("test_data"))
-    print(f"hex_to_binary_crypto_hash: {hex_to_binary_crypto_hash}")
+    hex_to_binary_generate_hash = hex_to_binary(generate_hash("test_data"))
+    print(f"hex_to_binary_generate_hash: {hex_to_binary_generate_hash}")
     
 if __name__=="__main__":
     main()
