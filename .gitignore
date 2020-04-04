@@ -1,3 +1,4 @@
 primary-blockchain/primary-env
 *cache__
 .vscode
+*.pyc

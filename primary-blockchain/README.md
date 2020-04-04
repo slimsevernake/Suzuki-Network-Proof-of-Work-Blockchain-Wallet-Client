@@ -8,7 +8,10 @@ source primary-env/bin/activate
 pip3 install -r requirements.txt
 ```
 **Test**
-Backend:
 ```
 python3 -m pytest backend/tests/
+```
+**Launch Application + API**
+```
+python3 -m backend.app
 ```

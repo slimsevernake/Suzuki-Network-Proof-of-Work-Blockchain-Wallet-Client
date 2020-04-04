@@ -26,7 +26,17 @@ class Blockchain:
         
         self.chain = incoming_chain
 
+    def serialize_to_json(self):
+        """
+        Serialize a given blockchain instance into an enum of blocks.
+        """
+        serialized_chain = []
 
+        for block in self.chain:
+            serialized_chain.append(block.serialize_to_json())
+            
+        return serialized_chain
+    
     @staticmethod
     def is_chain_valid(blockchain):
         """

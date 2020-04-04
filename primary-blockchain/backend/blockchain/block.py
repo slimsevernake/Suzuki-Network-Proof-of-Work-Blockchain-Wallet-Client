@@ -35,6 +35,12 @@ class Block:
     def __eq__(self, clone):
         return self.__dict__ == clone.__dict__
 
+    def serialize_to_json(self):
+        """
+        Serialize a given block object into a dict comprised of its attributes.
+        """
+        return self.__dict__
+
     @staticmethod
     def mine_block(prev_block, data):
         timestamp = time.time_ns()
