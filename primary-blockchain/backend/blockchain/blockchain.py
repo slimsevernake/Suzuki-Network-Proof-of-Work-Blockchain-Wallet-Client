@@ -11,6 +11,22 @@ class Blockchain:
     def __repr__(self):
         return f'Blockchain: {self.chain}'
     
+    def surrogate_chain(self, incoming_chain):
+        """
+        Surrogate local instance chain with that of incoming/proposal instance, contingent on the following ruleset:
+            - Len of incoming chain instance must exceed that of local instance;
+            - Incoming chain is formatted such that it is valid
+        """
+        if (len(incoming_chain) <= len(self.chain)):
+            raise Exception("Incoming chain exception. A surrogation requirement has not been met.")
+        try:
+            Blockchain.is_chain_valid(incoming_chain)
+        except Exception as err:
+             raise Exception(f"A surrogation requirement has not been met. See err: {err}")
+        
+        self.chain = incoming_chain
+
+
     @staticmethod
     def is_chain_valid(blockchain):
         """
