@@ -18,11 +18,11 @@ class Blockchain:
             - Incoming chain is formatted such that it is valid
         """
         if (len(incoming_chain) <= len(self.chain)):
-            raise Exception("Incoming chain exception. A surrogation requirement has not been met.")
+            raise Exception("Chain length exception. Surrogation requirements have not been met.")
         try:
             Blockchain.is_chain_valid(incoming_chain)
         except Exception as err:
-             raise Exception(f"A surrogation requirement has not been met. See err: {err}")
+             raise Exception(f"Invalid chain. Surrogation requirements have not been met. See err: {err}")
         
         self.chain = incoming_chain
 
