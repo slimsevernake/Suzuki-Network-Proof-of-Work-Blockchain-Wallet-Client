@@ -31,6 +31,9 @@ class Block:
             f"difficulty: {self.difficulty}), "
             f"nonce: {self.nonce})"
         )
+    
+    def __eq__(self, clone):
+        return self.__dict__ == clone.__dict__
 
     @staticmethod
     def mine_block(prev_block, data):
