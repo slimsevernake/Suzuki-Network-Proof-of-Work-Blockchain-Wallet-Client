@@ -1,6 +1,8 @@
 import uuid
+import json
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.asymmetric import ec
+from cryptography.hazmat.primitives import hashes
 from backend.config import INITIAL_BALANCE
 
 
@@ -18,9 +20,21 @@ class Wallet:
             default_backend()) 
         self.public_key = self.private_key.public_key() # extrapolate pubkey
 
+    def gen_signature(self, data):
+        """
+        Utilizes the local private key to generate a signature for a given input obj,`data`.
+        Returns as signature obj.
+        """
+        return self.private_key.sign(
+            json.dumps(data).encode("utf-8"),
+            ec.ECDSA(hashes.SHA256())
+        )
+
 def main():
     wallet = Wallet()
     print(f"Wallet: {wallet.__dict__}")
-
+    data = { "foo" : "bar" }
+    sig = wallet.gen_signature(data)
+    print(f"sig: {sig}")
 if __name__ == "__main__":
     main()
