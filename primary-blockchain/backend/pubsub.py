@@ -7,6 +7,7 @@ from pubnub.enums import PNReconnectionPolicy
 from backend.blockchain.block import Block
  
 pnconfig = PNConfiguration()
+pnconfig.reconnect_policy = PNReconnectionPolicy.LINEAR
 pnconfig.subscribe_key = config.pubsub["subscribe_key"]
 pnconfig.publish_key = config.pubsub["publish_key"]
 

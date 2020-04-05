@@ -64,3 +64,18 @@ def test_tx_update_when_exceeds_balance():
 
     with pytest.raises(Exception, match="Input amount exceeds balance."):
         transaction.tx_update(sender_wallet, "a13b2bf4", 10000)
+
+def test_is_tx_valid():
+    Transaction.is_tx_valid(Transaction(Wallet(), "b64e8ac4", 50))
+
+def test_is_tx_valid_when_invalid_outputs():
+    sender_wallet = Wallet()
+    transaction = Transaction(sender_wallet, "b64e8ac4", 50)
+    transaction.output[sender_wallet.address] = 9001
+
+    with pytest.raises(Exception, match="Invalid transaction."):
+       Transaction.is_tx_valid(transaction)
+
+def test_is_tx_valid_when_invalid_sig():
+    transaction = Transaction(Wallet(), "b64e8ac4", 50)
+    transaction.input["signature"] = Wallet().gen_signature(transaction.output)

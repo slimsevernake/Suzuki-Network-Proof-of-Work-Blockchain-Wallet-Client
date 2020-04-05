@@ -63,8 +63,22 @@ class Transaction:
         # re-sign Tx
         self.input = self.generate_input(sender_wallet, self.output)
 
-        # @staticmethod
-        # def is_tx_valid()
+    @staticmethod
+    def is_tx_valid(transaction):
+        """
+        Determine validity of a transaction.
+        """
+        output_total  = sum(transaction.output.values())
+
+        if (transaction.input["amount"] != output_total):
+            raise Exception("Invalid transaction.")
+        
+        if not Wallet.verify_signature(
+            transaction.input["public_key"],
+            transaction.output,
+            transaction.input["signature"]
+        ): 
+            raise Exception("Invalid signature.")
 
 def main():
     tx = Transaction(Wallet(), "recipient", 9)
