@@ -47,6 +47,25 @@ class Transaction:
             "signature": sender_wallet.gen_signature(output)
         }
 
+    def tx_update(self, sender_wallet, recipient, amount):
+        """
+        Update the Tx data object with an existing or new recipient.
+        """
+        if (amount > self.output[sender_wallet.address]):
+            raise Exception("Input amount exceeds balance.")
+        # recipient already in output
+        if (recipient in self.output):
+            self.output[recipient] = self.output[recipient] + amount
+        else:
+            self.output[recipient] = amount
+        # update sender wallet address
+        self.output[sender_wallet.address] = self.output[sender_wallet.address] - amount
+        # re-sign Tx
+        self.input = self.generate_input(sender_wallet, self.output)
+
+        # @staticmethod
+        # def is_tx_valid()
+
 def main():
     tx = Transaction(Wallet(), "recipient", 9)
     print(f"Tx: {tx.__dict__}")
