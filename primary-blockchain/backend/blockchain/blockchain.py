@@ -34,6 +34,17 @@ class Blockchain:
         return list(map(lambda block: block.serialize_to_json(), self.chain))
     
     @staticmethod
+    def deserialize_from_json(serialized_blockchain_obj):
+        """
+        De-serialize a given list of serialized blocks into a Blockchain instance.
+        """
+        blockchain = Blockchain()
+        blockchain.chain = list(
+            map(lambda serialized_block_obj: Block.deserialize_from_json(serialized_block_obj), serialized_blockchain_obj)
+        )
+        return blockchain
+
+    @staticmethod
     def is_chain_valid(blockchain):
         """
         Validate incoming blockchain qua the following ruleset:
