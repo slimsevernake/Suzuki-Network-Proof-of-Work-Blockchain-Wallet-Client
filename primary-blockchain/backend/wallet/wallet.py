@@ -3,6 +3,7 @@ import json
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.asymmetric import ec
 from cryptography.hazmat.primitives import hashes
+from cryptography.exceptions import InvalidSignature
 from backend.config import INITIAL_BALANCE
 
 
@@ -29,12 +30,27 @@ class Wallet:
             json.dumps(data).encode("utf-8"),
             ec.ECDSA(hashes.SHA256())
         )
+    
+    @staticmethod
+    def verify_signature(public_key, data, signature):
+        """
+        Signature verification.
+        Validates a signature against origin pubkey and data object.
+        Private method `verify` throws exception as opposed to bool `False`; it 
+        is therefore wrapped in a try-catch to produce boolean output.
+        """ 
+        try:
+            public_key.verify(
+                signature, 
+                json.dumps(data).encode("utf-8"),
+                ec.ECDSA(hashes.SHA256())
+            )
+            return True
+        except InvalidSignature:
+            return False
 
 def main():
+    # TO-DO: MAKE INTO TEST SUITE
     wallet = Wallet()
-    print(f"Wallet: {wallet.__dict__}")
-    data = { "foo" : "bar" }
-    sig = wallet.gen_signature(data)
-    print(f"sig: {sig}")
 if __name__ == "__main__":
     main()
