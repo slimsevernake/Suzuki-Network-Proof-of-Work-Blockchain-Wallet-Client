@@ -40,6 +40,14 @@ class Block:
         Serialize a given block object into a dict comprised of its attributes.
         """
         return self.__dict__
+    
+    @staticmethod
+    def deserialize_from_json(serialized_block_obj):
+        """
+        De-serialize a given serialized block/json incarnation into the original
+        block object/instance.
+        """
+        return Block(**serialized_block_obj)
 
     @staticmethod
     def mine_block(prev_block, data):
@@ -83,7 +91,7 @@ class Block:
             - difficulty must have adjusted by 1
             - the block has must be a valid aggregate of block fields
         """
-        if (prev_block.hash != block.prev_hash):
+        if (block.prev_hash != prev_block.hash):
             raise Exception("Value previous hash is invalid.")
         if (hex_to_binary(block.hash)[0:block.difficulty] != "0" * block.difficulty):
             raise Exception("Value error. A Proof of Work requirement has not been met.")

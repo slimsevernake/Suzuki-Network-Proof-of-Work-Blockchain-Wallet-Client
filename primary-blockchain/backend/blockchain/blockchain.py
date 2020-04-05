@@ -50,8 +50,8 @@ class Blockchain:
 
 def main(): 
     blockchain = Blockchain()
-    for n in range(10):
-         blockchain.add_block(n)
+    blockchain.add_block('one')
+    blockchain.add_block('two')
 
     print(blockchain)
 

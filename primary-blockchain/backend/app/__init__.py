@@ -6,10 +6,7 @@ from backend.pubsub import PubSub
 
 app = Flask(__name__)
 blockchain = Blockchain()
-pubsub = PubSub()
-
-for i in range(10):
-    blockchain.add_block(i)
+pubsub = PubSub(blockchain)
 
 @app.route("/")
 def default_route():
