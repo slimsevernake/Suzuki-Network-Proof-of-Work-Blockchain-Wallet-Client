@@ -15,3 +15,7 @@ python3 -m pytest backend/tests/
 ```
 python3 -m backend.app
 ```
+**Launch a Peer Instance**
+```
+export PEER=True && python3 -m backend.app
+```
