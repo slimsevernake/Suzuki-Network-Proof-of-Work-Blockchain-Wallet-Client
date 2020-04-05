@@ -9,7 +9,11 @@ pnconfig = PNConfiguration()
 pnconfig.reconnect_policy = PNReconnectionPolicy.LINEAR
 pnconfig.subscribe_key = config.pubsub["subscribe_key"]
 pnconfig.publish_key = config.pubsub["publish_key"]
-TEST_CHANNEL = "TEST_CHANNEL"
+
+CHANNELS = {
+    "TEST": "TEST",
+    "BLOCK": "BLOCK"
+}
 
 class Listener(SubscribeCallback):
     def message(self, pubnub, message_obj):
@@ -22,7 +26,7 @@ class PubSub():
     """
     def __init__(self):
         self.pubnub = PubNub(pnconfig)
-        self.pubnub.subscribe().channels([TEST_CHANNEL]).execute()
+        self.pubnub.subscribe().channels(CHANNELS.values()).execute()
         self.pubnub.add_listener(Listener())
 
     def publish(self, channel_str, message_obj):
@@ -31,12 +35,17 @@ class PubSub():
         """
         self.pubnub.publish().channel(channel_str).message(message_obj).sync()
 
+    def broadcast_block(self, block):
+        """
+        Broadcast a block obj to all nodes.
+        """
+        self.publish(CHANNELS["BLOCK"], block.serialize_to_json())
+
 def main():
     pubsub = PubSub()
 
     time.sleep(1)
-
-    pubsub.publish(TEST_CHANNEL, { "foo": "bar" })
+    pubsub.publish(CHANNELS["TEST"], { "foo": "bar" })
 
 if __name__ == "__main__":
     main()

@@ -23,12 +23,16 @@ def blockchain_route():
 def mine_block_route():
     transaction_data = "tx_data"
     blockchain.add_block(transaction_data)
-    return jsonify(blockchain.chain[-1].serialize_to_json())
+
+    block = blockchain.chain[-1]
+    pubsub.broadcast_block(block)
+    
+    return jsonify(block.serialize_to_json())
 
 PORT = 5000
 
 # peer instance, supports up to 1,000 peers
 if os.environ.get("PEER") == "True":
     PORT = random.randint(5001, 6000)
-    
+
 app.run(port=PORT)
