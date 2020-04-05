@@ -17,7 +17,7 @@ class Wallet:
         self.address = str(uuid.uuid4())[0:8] # 8 digit still affords 3T possible addresses
         self.balance = INITIAL_BALANCE
         self.private_key = ec.generate_private_key(
-            ec.SECP256K1(), # Koblitz I: prime-generated curve represented in 256 binary bits
+            ec.SECP256K1(), # Koblitz I: prime-generated elliptic curve represented in 256 binary bits
             default_backend()) 
         self.public_key = self.private_key.public_key() # extrapolate pubkey
 
@@ -50,7 +50,7 @@ class Wallet:
             return False
 
 def main():
-    # TO-DO: MAKE INTO TEST SUITE
     wallet = Wallet()
+    
 if __name__ == "__main__":
     main()
