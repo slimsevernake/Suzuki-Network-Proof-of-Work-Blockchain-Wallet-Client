@@ -19,6 +19,9 @@ def post_wallet_transact(recipient, amt):
         json={ "recipient": recipient, "amount": amt }
     ).json()
 
+def get_wallet_info():
+    return requests.get(f"{BASE_URL}/wallet/info").json()
+
 init = get_blockchain()
 print(f"Blockchain:  {init}")
 
@@ -31,11 +34,11 @@ print(f"""
 Transaction I (ID: {tx_1["id"]})
 ==========================================
 Transaction I Input:
-    address: {input_1["address"]}
-    amount: {input_1["amount"]}
-    public_key: {input_1["public_key"]}
-    signature: {input_1["signature"]}
-    timestamp: {input_1["timestamp"]}
+address: {input_1["address"]}
+amount: {input_1["amount"]}
+public_key: {input_1["public_key"]}
+signature: {input_1["signature"]}
+timestamp: {input_1["timestamp"]}
 ==========================================
 Transaction I Output: {tx_1["output"]}  
 ==========================================\n
@@ -53,16 +56,40 @@ print(f"""
 Transaction II (ID: {tx_2["id"]})
 ==========================================
 Transaction II Input:
-    address: {input_2["address"]}
-    amount: {input_2["amount"]}
-    public_key: {input_2["public_key"]}
-    signature: {input_2["signature"]}
-    timestamp: {input_2["timestamp"]}
+address: {input_2["address"]}
+amount: {input_2["amount"]}
+public_key: {input_2["public_key"]}
+signature: {input_2["signature"]}
+timestamp: {input_2["timestamp"]}
 ==========================================
 Transaction II Output: {tx_2["output"]}  
 ==========================================\n
 """)
 # Mine Block w/preceding Txs
 time.sleep(1) # sleep to allow broadcast to Tx Pool
-mine = get_blockchain_mine()
-print(f"Mined Block: {mine}")
+mined_block = get_blockchain_mine()
+mined_data = mined_block["data"][0]
+
+print(f"""
+Mined Block I (ID: {mined_data["id"]})
+==========================================
+Mined Block I Input: 
+address: {mined_data["input"]["address"]}
+amount: {mined_data["input"]["amount"]}
+public_key: {mined_data["input"]["public_key"]}
+signature: {mined_data["input"]["signature"]}
+timestamp: {mined_data["input"]["timestamp"]}
+==========================================
+Mined Block I Output: {mined_data["output"]}
+==========================================\n
+BLOCK INPUT RAW: {mined_block}
+""")
+
+wallet_info = get_wallet_info()
+print(f"""
+Wallet Information: 
+==========================================
+Address: {wallet_info["Address"]}
+Balance: {wallet_info["Balance"]}
+==========================================
+""")

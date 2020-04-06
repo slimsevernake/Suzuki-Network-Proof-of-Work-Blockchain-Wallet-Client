@@ -17,15 +17,23 @@ class Wallet:
         - Maintains local record of its owner's balance
         - Enables owner to authorize transactions on the network.
     """
-    def __init__(self):
+    def __init__(self, blockchain=None):
+        self.blockchain = blockchain
         self.address = str(uuid.uuid4())[0:8] # 8 digit still affords 3T possible addresses
-        self.balance = INITIAL_BALANCE
         self.private_key = ec.generate_private_key(
             ec.SECP256K1(), # Koblitz I: prime-generated elliptic curve represented in 256 binary bits
             default_backend()) 
         self.public_key = self.private_key.public_key() # extrapolate pubkey
         self.serialize_public_key()
-        
+    
+    @property
+    def balance(self):
+        """
+        Any time property `balance` is called, balance is calculated per blockchain data.
+        """
+        return Wallet.calculate_balance(self.blockchain, self.address)
+
+
     def gen_signature(self, data):
         """
         Utilizes the local private key to generate a signature for a given input obj,`data`.
@@ -77,12 +85,15 @@ class Wallet:
     @staticmethod
     def calculate_balance(blockchain, address):
         """
-        Calculates the balance of a given wallet address contingent on 
-        I/O and UTXO data of given blockchain instance.
-        Balance is defined as an aggregation of the given address' output values 
-        as of the most recent transaction by that address.
+        Calculates the balance of a given wallet address contingent on I/O and UTXO data 
+        of given blockchain instance, or initializes to INITIAL_BALANCE if one is not 
+        provided. Balance is defined as an aggregation of the given address' output
+        values as of the most recent transaction by that address.
         """
         balance = INITIAL_BALANCE
+        # if no blockchain instance provided e.g. new wallet
+        if not blockchain:
+            return balance
         # parse blockchain for Tx that match given address
         for block in blockchain.chain:
             for transaction in block.data:

@@ -10,7 +10,7 @@ from backend.wallet.transaction_pool import TransactionPool
 
 app = Flask(__name__)
 blockchain = Blockchain()
-wallet = Wallet()
+wallet = Wallet(blockchain)
 transaction_pool = TransactionPool()
 pubsub = PubSub(blockchain, transaction_pool)
 
@@ -58,6 +58,10 @@ def wallet_transaction_route():
     pubsub.broadcast_transaction(transaction)
 
     return jsonify(transaction.serialize_to_json())
+
+@app.route("/wallet/info")
+def wallet_info_route():
+    return jsonify({"Address" : wallet.address, "Balance" : wallet.balance})
 
 ROOT_PORT = 5000
 PORT = ROOT_PORT
