@@ -24,14 +24,12 @@ def blockchain_route():
 
 @app.route("/blockchain/mine")
 def mine_block_route():
-    transaction_data = "tx_data"
-
-    transaction_values = transaction_pool.transaction_map.values()
-    
-    blockchain.add_block(transaction_data)
-
+    # serialize all Tx 
+    tx_data = transaction_pool.serialize_to_json()
+    blockchain.add_block(tx_data)
     block = blockchain.chain[-1]
     pubsub.broadcast_block(block)
+    transaction_pool.purge(blockchain)
     
     return jsonify(block.serialize_to_json())
 

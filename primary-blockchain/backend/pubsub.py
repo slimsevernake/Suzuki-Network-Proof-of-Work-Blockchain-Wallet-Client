@@ -39,6 +39,8 @@ class Listener(SubscribeCallback):
 
             try:
                 self.blockchain.surrogate_chain(prospective_chain)
+                # purge recorded Tx from Pool
+                self.transaction_pool.purge(self.blockchain)
                 print(f"\n -- Chain surrogation successful.")
             except Exception as err:
                 print(f"\n -- Chain surrogation failed. See: {err}")

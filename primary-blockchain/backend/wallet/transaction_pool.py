@@ -20,3 +20,31 @@ class TransactionPool:
         for transaction in self.transaction_map.values():
             if (transaction.input["address"] == address):
                 return transaction
+
+    def serialize_to_json(self):
+        """
+        Serializes each Tx of a given Tx Pool. Returns Tx pool as list of JSON-serialized
+        Tx values.
+        """
+        # pull all Tx
+        transaction_values = self.transaction_map.values()
+        # transform Tx into JSON representation thereof, return collated list 
+        return list(map(
+                lambda transaction: transaction.serialize_to_json(), 
+                transaction_values
+            ))
+    
+    def purge(self, blockchain):
+        """
+        Removes from Tx Pool any and all Tx that have already been recorded in the blockchain.
+        """
+        for block in blockchain.chain:
+            for transaction in block.data:
+                # if success, Tx has been mined; else `del` will raise keyerr
+                try:
+                    del self.transaction_map[transaction["id"]] # obj is still in serialized/JSON format
+                except KeyError:
+                    pass
+                
+# TODO add pubsub handling of Tx broadcast to change msg contingent on whether 
+# or not Tx already exists (and has been updated)
