@@ -25,6 +25,9 @@ def blockchain_route():
 @app.route("/blockchain/mine")
 def mine_block_route():
     transaction_data = "tx_data"
+
+    transaction_values = transaction_pool.transaction_map.values()
+    
     blockchain.add_block(transaction_data)
 
     block = blockchain.chain[-1]

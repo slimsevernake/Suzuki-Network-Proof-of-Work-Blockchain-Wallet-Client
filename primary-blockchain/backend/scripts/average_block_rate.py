@@ -26,5 +26,3 @@ for i in range(iterations):
     New block difficulty: {blockchain.chain[-1].difficulty}
     Time to mine new block: {time_to_mine}s
     Average time to add blocks: {average_time}s\n""")
-
-
