@@ -63,6 +63,12 @@ class Transaction:
         # re-sign Tx
         self.input = self.generate_input(sender_wallet, self.output)
 
+    def serialize_to_json(self):
+        """
+        Serialize a given Tx.
+        """
+        return self.__dict__
+
     @staticmethod
     def is_tx_valid(transaction):
         """

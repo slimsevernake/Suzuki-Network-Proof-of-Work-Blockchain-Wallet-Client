@@ -2,3 +2,4 @@ primary-blockchain/primary-env
 *cache__
 .vscode
 *.pyc
+primary-blockchain/backend/env_config.py
