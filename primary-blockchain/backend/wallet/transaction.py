@@ -30,14 +30,15 @@ class Transaction:
 
     def generate_output(self, sender_wallet, recipient, amount):
         """
-        Generates formatted output object to represent Tx data.
+        Generates formatted output object to represent Tx data. 
+        Allocates UTXO.
         """
         if (amount > sender_wallet.balance):
             raise Exception("Input amount exceeds balance.")
 
         output = {}
         output[recipient] = amount
-        # change
+        # UTXO
         output[sender_wallet.address] = sender_wallet.balance - amount
 
         return output

@@ -73,6 +73,28 @@ class Wallet:
             return True
         except InvalidSignature:
             return False
+    
+    @staticmethod
+    def calculate_balance(blockchain, address):
+        """
+        Calculates the balance of a given wallet address contingent on 
+        I/O and UTXO data of given blockchain instance.
+        Balance is defined as an aggregation of the given address' output values 
+        as of the most recent transaction by that address.
+        """
+        balance = INITIAL_BALANCE
+        # parse blockchain for Tx that match given address
+        for block in blockchain.chain:
+            for transaction in block.data:
+                # if address is sender
+                if (transaction["input"]["address"] == address):
+                    # for each Tx, reset balance to UTXO
+                    balance = transaction["output"][address]
+                # elif address is recipient
+                elif (address in transaction["output"]):
+                    # for each Tx, add received amt to balance
+                    balance += transaction["output"][address]
+        return balance
 
 def main():
     wallet = Wallet()
