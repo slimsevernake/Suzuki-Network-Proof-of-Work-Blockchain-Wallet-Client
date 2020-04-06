@@ -45,7 +45,7 @@ def wallet_transaction_route():
     transaction = transaction_pool.existing_transaction(wallet.address)
     
     if transaction:
-        transaction.update(
+        transaction.tx_update(
         wallet,
         tx_data["recipient"],
         tx_data["amount"]
