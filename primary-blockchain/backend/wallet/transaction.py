@@ -91,6 +91,12 @@ class Transaction:
         """
         Determine validity of a transaction.
         """
+        # Tx is mining reward, must be (a) single Tx and (b) said Tx == MINING_REWARD
+        if (transaction.input == MINING_REWARD_INPUT):
+            if (list(transaction.output.values()) != [MINING_REWARD]):
+                raise Exception("Invalid block reward transaction.")
+            return # exit, mining reward does not have following vals
+
         output_total  = sum(transaction.output.values())
 
         if (transaction.input["amount"] != output_total):

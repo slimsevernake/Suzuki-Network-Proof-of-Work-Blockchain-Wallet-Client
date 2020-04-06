@@ -87,3 +87,22 @@ def test_block_reward_tx():
 
     assert transaction.input == MINING_REWARD_INPUT
     assert transaction.output[wallet.address] == MINING_REWARD
+
+def test_block_reward_tx_when_valid_tx():
+    reward_tx = Transaction.generate_reward_transaction(Wallet())
+    Transaction.is_tx_valid(reward_tx)
+
+def test_block_reward_tx_when_exceeds_recipients():
+    reward_tx = Transaction.generate_reward_transaction(Wallet())
+    reward_tx.output["second_and_invalid_recipient"] = 100
+
+    with pytest.raises(Exception, match="Invalid block reward transaction."):
+        Transaction.is_tx_valid(reward_tx)
+
+def test_block_reward_tx_when_invalid_reward_amt():
+    wallet = Wallet()
+    reward_tx = Transaction.generate_reward_transaction(wallet)
+    reward_tx.output[wallet.address] = 100000
+
+    with pytest.raises(Exception, match="Invalid block reward transaction."):
+        Transaction.is_tx_valid(reward_tx)
