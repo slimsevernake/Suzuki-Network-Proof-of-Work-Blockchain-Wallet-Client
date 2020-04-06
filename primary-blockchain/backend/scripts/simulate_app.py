@@ -69,7 +69,6 @@ Transaction II Output: {tx_2["output"]}
 time.sleep(1) # sleep to allow broadcast to Tx Pool
 mined_block = get_blockchain_mine()
 mined_data = mined_block["data"][0]
-
 print(f"""
 Mined Block I (ID: {mined_data["id"]})
 ==========================================

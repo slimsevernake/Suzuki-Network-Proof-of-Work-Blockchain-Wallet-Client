@@ -24,8 +24,17 @@ def blockchain_route():
 
 @app.route("/blockchain/mine")
 def mine_block_route():
+    """
+    Mine blocks on the shared chain. If given wallet is first to validate a given block, 
+    `prospective_mining_reward` will be allocated into given wallet UTXO. Else, the reward 
+    transaction will be void.
+    """
     # serialize all Tx 
     tx_data = transaction_pool.serialize_to_json()
+    # generate, serialize mining reward transaction obj
+    prospective_mining_reward = Transaction.generate_reward_transaction(wallet).serialize_to_json()
+    # append reward Tx and submit
+    tx_data.append(prospective_mining_reward)
     blockchain.add_block(tx_data)
     block = blockchain.chain[-1]
     pubsub.broadcast_block(block)

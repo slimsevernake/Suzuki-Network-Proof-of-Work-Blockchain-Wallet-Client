@@ -6,3 +6,6 @@ SECONDS = 1000 * MILLISECONDS
 MINE_RATE = 4 * SECONDS
 
 INITIAL_BALANCE = 1000
+
+MINING_REWARD = 50
+MINING_REWARD_INPUT = { "address": "*--suzuki-mining-reward--*"}

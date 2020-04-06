@@ -1,6 +1,7 @@
 import pytest
 from backend.wallet.transaction import Transaction
 from backend.wallet.wallet import Wallet
+from backend.config import MINING_REWARD, MINING_REWARD_INPUT
 
 def test_transaction():
     sender_wallet = Wallet()
@@ -79,3 +80,10 @@ def test_is_tx_valid_when_invalid_outputs():
 def test_is_tx_valid_when_invalid_sig():
     transaction = Transaction(Wallet(), "b64e8ac4", 50)
     transaction.input["signature"] = Wallet().gen_signature(transaction.output)
+
+def test_block_reward_tx():
+    wallet = Wallet()
+    transaction = Transaction.generate_reward_transaction(wallet)
+
+    assert transaction.input == MINING_REWARD_INPUT
+    assert transaction.output[wallet.address] == MINING_REWARD
