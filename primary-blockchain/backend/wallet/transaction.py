@@ -8,14 +8,22 @@ class Transaction:
     Receipt of exchange in network-based currency from sender to one
     or more recipients.
     """
-    def __init__(self, sender_wallet, recipient, amount):
-        self.id = str(uuid.uuid4())[0:8] 
-        self.output = self.generate_output(
+    def __init__(
+        self, 
+        sender_wallet=None, 
+        recipient=None, 
+        amount=None,
+        id=None,
+        output=None,
+        input=None
+    ):
+        self.id = id or str(uuid.uuid4())[0:8] 
+        self.output = output or self.generate_output(
             sender_wallet,
             recipient,
             amount
         )
-        self.input = self.generate_input(
+        self.input = input or self.generate_input(
             sender_wallet,
             self.output
         )
@@ -70,6 +78,14 @@ class Transaction:
         return self.__dict__
 
     @staticmethod
+    def deserialize_from_json(tx_json_obj):
+        """
+        Deserialize given transaction's JSON representation back into a
+        Transaction instance.
+        """
+        return Transaction(**tx_json_obj)
+
+    @staticmethod
     def is_tx_valid(transaction):
         """
         Determine validity of a transaction.
@@ -90,5 +106,10 @@ def main():
     tx = Transaction(Wallet(), "recipient", 9)
     print(f"Tx: {tx.__dict__}")
 
-if __name__ == "__main__":
+    tx_json_obj = tx.serialize_to_json()
+    restored_tx_obj = Transaction.deserialize_from_json(tx_json_obj)
+    print(f'restored_transaction.__dict__: {restored_tx_obj.__dict__}')
+
+if __name__ == '__main__':
     main()
+

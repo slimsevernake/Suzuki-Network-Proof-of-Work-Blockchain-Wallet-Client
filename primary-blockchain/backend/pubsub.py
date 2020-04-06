@@ -5,6 +5,7 @@ from pubnub.pnconfiguration import PNConfiguration
 from pubnub.callbacks import SubscribeCallback
 from pubnub.enums import PNReconnectionPolicy
 from backend.blockchain.block import Block
+from backend.wallet.transaction import Transaction
  
 pnconfig = PNConfiguration()
 pnconfig.reconnect_policy = PNReconnectionPolicy.LINEAR
@@ -13,7 +14,8 @@ pnconfig.publish_key = config.pubsub["publish_key"]
 
 CHANNELS = {
     "TEST": "TEST",
-    "BLOCK": "BLOCK"
+    "BLOCK": "BLOCK",
+    'TRANSACTION': 'TRANSACTION'
 }
 
 class Listener(SubscribeCallback):
@@ -23,8 +25,9 @@ class Listener(SubscribeCallback):
     generated, to which the broadcast block is appended. This prospective instance is then
     evaluated for chain surrogation.
     """
-    def __init__(self, blockchain):
+    def __init__(self, blockchain, transaction_pool):
         self.blockchain = blockchain 
+        self.transaction_pool = transaction_pool
 
     def message(self, pubnub, message_obj):
         print(f"\n -- Channel: {message_obj.channel} | Message: {message_obj.message}")
@@ -40,15 +43,20 @@ class Listener(SubscribeCallback):
             except Exception as err:
                 print(f"\n -- Chain surrogation failed. See: {err}")
 
+        elif (message_obj.channel == CHANNELS["TRANSACTION"]):
+            transaction = Transaction.deserialize_from_json(message_obj.message)
+            self.transaction_pool.set_transaction(transaction)
+            print("\n -- New transaction successfully broadcast, added to the transaction pool.")
+
 class PubSub():
     """
     Manages the publish/subscribe layer of the application, affording
     scalable communications infrastructure across nodes.
     """
-    def __init__(self, blockchain):
+    def __init__(self, blockchain, transaction_pool):
         self.pubnub = PubNub(pnconfig)
         self.pubnub.subscribe().channels(CHANNELS.values()).execute()
-        self.pubnub.add_listener(Listener(blockchain))
+        self.pubnub.add_listener(Listener(blockchain, transaction_pool))
 
     def publish(self, channel_str, message_obj):
         """
@@ -61,6 +69,12 @@ class PubSub():
         Broadcast a block obj to all nodes.
         """
         self.publish(CHANNELS["BLOCK"], block.serialize_to_json())
+
+    def broadcast_transaction(self, transaction):
+        """
+        Broadcast a transaction obj to all nodes.
+        """
+        self.publish(CHANNELS['TRANSACTION'], transaction.serialize_to_json())
 
 def main():
     pubsub = PubSub()

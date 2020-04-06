@@ -6,11 +6,13 @@ from backend.blockchain.blockchain import Blockchain
 from backend.pubsub import PubSub
 from backend.wallet.wallet import Wallet
 from backend.wallet.transaction import Transaction
+from backend.wallet.transaction_pool import TransactionPool
 
 app = Flask(__name__)
 blockchain = Blockchain()
 wallet = Wallet()
-pubsub = PubSub(blockchain)
+transaction_pool = TransactionPool()
+pubsub = PubSub(blockchain, transaction_pool)
 
 @app.route("/")
 def default_route():
@@ -30,14 +32,30 @@ def mine_block_route():
     
     return jsonify(block.serialize_to_json())
 
+# @app.route("/wallet")
+# def wallet_route():
+#     return wallet.balance
+
 @app.route("/wallet/transact", methods=["POST"])
 def wallet_transaction_route():
     tx_data = request.get_json()
-    transaction = Transaction(
+    transaction = transaction_pool.existing_transaction(wallet.address)
+    
+    if transaction:
+        transaction.update(
         wallet,
         tx_data["recipient"],
         tx_data["amount"]
     )
+    else:
+        transaction = Transaction(
+            wallet,
+            tx_data["recipient"],
+            tx_data["amount"]
+        )
+    
+    pubsub.broadcast_transaction(transaction)
+
     return jsonify(transaction.serialize_to_json())
 
 ROOT_PORT = 5000
