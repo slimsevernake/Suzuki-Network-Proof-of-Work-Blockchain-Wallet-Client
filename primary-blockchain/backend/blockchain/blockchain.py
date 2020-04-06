@@ -1,4 +1,6 @@
 from backend.blockchain.block import Block
+from backend.wallet.transaction import Transaction
+from backend.config import MINING_REWARD_INPUT
 
 class Blockchain:
     def __init__(self):
@@ -58,6 +60,37 @@ class Blockchain:
             block = blockchain[i]
             prev_block = blockchain[i -1]
             Block.is_block_valid(prev_block, block)
+
+    @staticmethod
+    def is_tx_chain_valid(blockchain):
+        """
+        Validate incoming blockchain comprised of blocks with Tx therein qua the following ruleset:
+            - each Tx occurs once in the blockchain (i.e. 'double spend')
+            - there is only one valid reward Tx per block 
+            - transaction obj must be intrinsically valid
+        """
+        # Tx tracked by id, raise if duplicate
+        tx_tracking_pool = set()
+
+        for block in blockchain:
+            mining_reward_extant = False
+            for serialized_tx in block.data:
+                deserialized_tx = Transaction.deserialize_from_json(serialized_tx)
+                
+                if (deserialized_tx.input == MINING_REWARD_INPUT):
+                    if (mining_reward_extant):
+                        raise Exception(f"""
+                            There can only be one mining reward per block. 
+                            Evaluation of block with hash: {block.hash} recommended.
+                        """)
+                    mining_reward_extant = True
+
+                if (deserialized_tx.id in tx_tracking_pool):
+                    raise Exception(f"Transaction {deserialized_tx.id} is not unique; this transaction is therefore invalid.")
+                # add Tx to tracking pool
+                tx_tracking_pool.add(deserialized_tx.id)
+                # last, run validator to check format
+                Transaction.is_tx_valid(deserialized_tx)
 
 def main(): 
     blockchain = Blockchain()
