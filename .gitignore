@@ -4,7 +4,7 @@ primary-blockchain/primary-env
 .vscode
 *.pyc
 primary-blockchain/backend/env_config.py
-primary-blockchain/frontend/src/config.js
+# primary-blockchain/frontend/src/config.js
 primary-blockchain/frontend/package-lock.json
 *.env
 
