@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import Blockchain from './Blockchain';
-import { MICROSECONDS_PY } from "../config.js"; 
+import { MILLISECONDS_PY } from "../config.js"; 
 import Transaction from "./Transaction.jsx";
 
 
@@ -39,7 +38,7 @@ function TxDisplay({ block }) {
 function Block({ block }) {
     const { timestamp, hash } = block;
     const hash_readable = `${hash.substring(0, 15)}...`
-    const timestamp_readable = new Date(timestamp / MICROSECONDS_PY).toLocaleString();
+    const timestamp_readable = new Date(timestamp / MILLISECONDS_PY).toLocaleString();
 
     return (
         <div className="Block">
