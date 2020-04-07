@@ -96,7 +96,8 @@ class Blockchain:
                 balance_provenance = Wallet.calculate_balance(
                     blockchain_provenance,
                     deserialized_tx.input["address"]
-                    )
+                )
+
                 if (balance_provenance != deserialized_tx.input["amount"]):
                     raise Exception(f"Transaction {deserialized_tx.id} contains an invalid input amount.")
                 # last, run validator to check format

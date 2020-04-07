@@ -85,6 +85,6 @@ def test_transaction_chain_when_invalid_balance_provenance(clone_blockchain):
 
     clone_blockchain.add_block(malformed_tx_instance.serialize_to_json())
 
-    with pytest.raises(Exception):
+    with pytest.raises(Exception, match="contains an invalid input amount"):
         Blockchain.is_tx_chain_valid(clone_blockchain.chain)
 
