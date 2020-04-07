@@ -83,7 +83,7 @@ def test_transaction_chain_when_invalid_balance_provenance(clone_blockchain):
     malformed_tx_instance.input["amount"] = 9001
     malformed_tx_instance.input["signature"] = wallet.gen_signature(malformed_tx_instance.output)
 
-    clone_blockchain.add_block(malformed_tx_instance.serialize_to_json())
+    clone_blockchain.add_block([malformed_tx_instance.serialize_to_json()])
 
     with pytest.raises(Exception, match="contains an invalid input amount"):
         Blockchain.is_tx_chain_valid(clone_blockchain.chain)

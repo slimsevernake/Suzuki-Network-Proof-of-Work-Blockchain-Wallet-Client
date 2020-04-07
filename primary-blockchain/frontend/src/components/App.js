@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import logo from "../assets/geo.png"
 import { ROOT_PATH } from "../config.js"
+import Blockchain from "./Blockchain.jsx"
 
 function App() {
   const [walletInfo, setWalletInfo] = useState({});
@@ -21,6 +22,8 @@ function App() {
         <div>Address: {Address}</div>
         <div>Balance: {Balance}</div>
       </div>
+      <br />
+      <Blockchain />
     </div>
   );
 }
