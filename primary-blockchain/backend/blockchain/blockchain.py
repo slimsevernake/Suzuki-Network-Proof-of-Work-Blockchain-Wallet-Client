@@ -97,8 +97,8 @@ class Blockchain:
                     blockchain_provenance,
                     deserialized_tx.input["address"]
                     )
-                if balance_provenance != deserialized_tx.input["amount"]:
-                    raise Exception("")
+                if (balance_provenance != deserialized_tx.input["amount"]):
+                    raise Exception(f"Transaction {deserialized_tx.id} contains an invalid input amount.")
                 # last, run validator to check format
                 Transaction.is_tx_valid(deserialized_tx)
 

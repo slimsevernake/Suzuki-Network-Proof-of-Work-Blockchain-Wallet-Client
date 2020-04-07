@@ -75,3 +75,16 @@ def test_transaction_chain_when_tx_malformatted(clone_blockchain):
 
     with pytest.raises(Exception):
         Blockchain.is_tx_chain_valid(clone_blockchain.chain)
+
+def test_transaction_chain_when_invalid_balance_provenance(clone_blockchain):
+    wallet = Wallet()
+    malformed_tx_instance = Transaction(Wallet(), "b13b2bf4", 1)
+    malformed_tx_instance.output[wallet.address] = 9000
+    malformed_tx_instance.input["amount"] = 9001
+    malformed_tx_instance.input["signature"] = wallet.gen_signature(malformed_tx_instance.output)
+
+    clone_blockchain.add_block(malformed_tx_instance.serialize_to_json())
+
+    with pytest.raises(Exception):
+        Blockchain.is_tx_chain_valid(clone_blockchain.chain)
+
