@@ -105,10 +105,10 @@ class Blockchain:
 
 def main(): 
     blockchain = Blockchain()
-    blockchain.add_block('one')
-    blockchain.add_block('two')
+    # blockchain.add_block('one')
+    # blockchain.add_block('two')
 
-    print(blockchain)
+    # print(blockchain)
 
 if __name__ == "__main__":
     main()
