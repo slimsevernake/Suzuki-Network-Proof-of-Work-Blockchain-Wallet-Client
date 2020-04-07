@@ -1,5 +1,6 @@
 from backend.blockchain.block import Block
 from backend.wallet.transaction import Transaction
+from backend.wallet.wallet import Wallet
 from backend.config import MINING_REWARD_INPUT
 
 class Blockchain:
@@ -71,24 +72,33 @@ class Blockchain:
         """
         # Tx tracked by id, raise if duplicate
         tx_tracking_pool = set()
-
-        for block in blockchain:
+        # unwrap blockchain, unwrap blocks therein, deserialize ea block's Tx and parse them
+        for i in range(len(blockchain)):
+            block = blockchain[i]
             mining_reward_extant = False
             for serialized_tx in block.data:
                 deserialized_tx = Transaction.deserialize_from_json(serialized_tx)
-                
+                # if Tx is a block reward, only validate against reward fields
                 if (deserialized_tx.input == MINING_REWARD_INPUT):
                     if (mining_reward_extant):
                         raise Exception(f"""
                             There can only be one mining reward per block. 
-                            Evaluation of block with hash: {block.hash} recommended.
-                        """)
+                            Evaluation of block with hash: {block.hash} recommended.""")
                     mining_reward_extant = True
-
+                # if Tx already exists
                 if (deserialized_tx.id in tx_tracking_pool):
                     raise Exception(f"Transaction {deserialized_tx.id} is not unique; this transaction is therefore invalid.")
                 # add Tx to tracking pool
                 tx_tracking_pool.add(deserialized_tx.id)
+                # recalc balance after every Tx to prevent input tamper
+                blockchain_provenance = Blockchain()
+                blockchain_provenance.chain = blockchain[0:i]
+                balance_provenance = Wallet.calculate_balance(
+                    blockchain_provenance,
+                    deserialized_tx.input["address"]
+                    )
+                if balance_provenance != deserialized_tx.input["amount"]:
+                    raise Exception("")
                 # last, run validator to check format
                 Transaction.is_tx_valid(deserialized_tx)
 
