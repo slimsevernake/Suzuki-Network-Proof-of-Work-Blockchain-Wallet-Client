@@ -44,3 +44,12 @@ export SEED=True && python3 -m backend.app
 
 Development demos:
 - Tx Pool Demo: https://streamable.com/x9fdii
+
+Features:
+- A full Proof-of-Work blockchain with full security validation suite
+- Fully distibuted P2P PubSub model network.
+- Fully integrated cryptocurrency and ledger integration of Tx + UTXO.
+- Wallet and Miner peer clients with a browser-driven user-interface.
+- A full Block Explorer, updated with real-time polling.
+- Smart pagination, known addresses, transaction pool user-interfaces.
+- Cross-network data encoding and serialization.  

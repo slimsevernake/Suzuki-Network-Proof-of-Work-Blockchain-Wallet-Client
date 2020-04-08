@@ -19,6 +19,7 @@ function App() {
       <br />
       <Link to="/blockchain">Blockchain Explorer</Link>
       <Link to="/transact">Conduct a Transaction</Link>
+      <Link to="/transactions">View Pending Transactions</Link>
       <div className="WalletInfo">
         <div>Address: {Address}</div>
         <div>Balance: {Balance}</div>

@@ -40,7 +40,7 @@ function Block({ block }) {
     const hash_readable = `${hash.substring(0, 15)}...`
     const timestamp_readable = new Date(timestamp / MILLISECONDS_PY).toLocaleString();
 
-    let genesis = hash_readable == "genesis_hash..."
+    let genesis = hash_readable === "genesis_hash..."
     return (
         <div className="Block">
             <div>Hash: {hash_readable}</div>

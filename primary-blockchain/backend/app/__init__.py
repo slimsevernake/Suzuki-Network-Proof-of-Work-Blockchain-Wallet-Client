@@ -88,6 +88,19 @@ def wallet_transaction_route():
 def wallet_info_route():
     return jsonify({"Address" : wallet.address, "Balance" : wallet.balance})
 
+@app.route("/known-addresses")
+def known_addresses_route():
+    known_addresses = set()
+    for block in blockchain.chain:
+        for tx in block.data:
+            known_addresses.update(tx["output"].keys())
+
+    return jsonify(list(known_addresses))
+
+@app.route("/transactions")
+def tx_route():
+    return jsonify(transaction_pool.serialize_to_json())
+
 ROOT_PORT = 5000
 PORT = ROOT_PORT
 
@@ -111,5 +124,10 @@ if os.environ.get("SEED") == "True":
             Transaction(Wallet(),Wallet().address, random.randint(2, 50)).serialize_to_json(),
             Transaction(Wallet(),Wallet().address, random.randint(2, 50)).serialize_to_json()
         ])
+    # set Tx in pool
+    for i in range(3):
+        transaction_pool.set_transaction(
+                        Transaction(Wallet(),Wallet().address, random.randint(2, 50))
+        )
 
 app.run(port=PORT)
