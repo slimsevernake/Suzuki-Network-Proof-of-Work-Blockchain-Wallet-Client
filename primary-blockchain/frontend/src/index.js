@@ -13,7 +13,7 @@ ReactDOM.render(
     <Switch>
       <Route exact path="/" component={App}/>
       <Route path="/blockchain" component={Blockchain}/>
-      <Route path="/transact" component={Transaction}/>
+      <Route path="/transact" component={Transact}/>
     </Switch>
   </Router>,
   document.getElementById('root')
