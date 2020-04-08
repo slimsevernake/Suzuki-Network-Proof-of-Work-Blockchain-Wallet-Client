@@ -1,11 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ROOT_PATH } from "../config.js" 
 
 function Transact() {
     const [amount, setAmount] = useState(0);
     const [recipient, setRecipient] = useState("");
+    const [knownAddresses, setKnownAddresses] = useState([]);
 
+    useEffect(() => {
+        fetch(`${ROOT_PATH}/known-addresses`)
+            .then(res => res.json())
+            .then(json => setKnownAddresses(json))
+    }, []);
+    
     const updateRecipient = event => {
         setRecipient(event.target.value)
     }
@@ -44,6 +51,20 @@ function Transact() {
                     <button type="submit" className="btn btn-primary" onClick={submitTransaction}>
                         Submit
                     </button>
+                    
+                </div>
+                <br />
+                <h4>Known Addresses</h4>
+                <div>
+                {
+                    knownAddresses.map((address, idx) => (
+                        <span key={address}>
+                        <u>{address}</u>{idx !== address.length - 1 ? ", " : ""}
+                        </span>
+                    )
+                    
+                    )
+                }
                     
                 </div>
             </div>
