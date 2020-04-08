@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ROOT_PATH } from "../config.js" 
+import { ROOT_PATH } from "../config.js";
+import history from "../history.js";
 
 function Transact() {
     const [amount, setAmount] = useState(0);
@@ -29,6 +30,8 @@ function Transact() {
         }).then(res => res.json()).then(json => {
             console.log("here", json);
             alert("Success");
+
+            history.push("/transactions");
         })
     }
 
@@ -57,9 +60,9 @@ function Transact() {
                 <h4>Known Addresses</h4>
                 <div>
                 {
-                    knownAddresses.map((address, idx) => (
+                    knownAddresses.map((address, i) => (
                         <span key={address}>
-                        <u>{address}</u>{idx !== address.length - 1 ? ", " : ""}
+                        <u>{address}</u>{(i !== address.length - 1) ? ", " : ""}
                         </span>
                     )
                     
