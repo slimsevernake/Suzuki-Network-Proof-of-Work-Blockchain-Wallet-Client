@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from "react-router-dom";
 import { ROOT_PATH } from "../config.js"
 import Block from "./Block.jsx"
+
 
 const PAGINATION_RANGE = 3;
 
@@ -29,6 +31,8 @@ function Blockchain() {
     
     return (
         <div className="Blockchain">
+            <Link to="/">Home</Link>
+            <hr />
             <h3>Blockchain</h3>
             <div>
                 {blockchain.map(block => (
@@ -46,7 +50,7 @@ function Blockchain() {
                         const end = (page + 1) * PAGINATION_RANGE
                         return (
                             <span key={page} onClick={() => fetchNewPage({start, end})}>
-                                <button>
+                                <button className="btn btn-primary">
                                     {page+1}
                                 </button>{" "}
                             </span>

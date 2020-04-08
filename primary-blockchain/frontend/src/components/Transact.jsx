@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { ROOT_PATH } from "../config.js" 
 
 function Transact() {
@@ -26,6 +27,8 @@ function Transact() {
 
     return (
         <div className="ConductTransaction">
+            <Link to="/">Home</Link>
+            <hr />
             <h3>Conduct a Transaction</h3>
             <br />
             <div>

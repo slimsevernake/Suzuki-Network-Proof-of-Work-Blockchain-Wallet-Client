@@ -21,14 +21,14 @@ function TxDisplay({ block }) {
                     </div>
                 ))}
                 <br />
-                <button onClick={toggleTxDisplay}>Show Less</button>
+                <button className="btn btn-primary" onClick={toggleTxDisplay}>Show Less</button>
             </div>
         )
     }
     return (
         <div>
             <br />
-            <button onClick={toggleTxDisplay}>Show More</button>
+            <button className="btn btn-primary" onClick={toggleTxDisplay}>Show More</button>
         </div>
     )
     
