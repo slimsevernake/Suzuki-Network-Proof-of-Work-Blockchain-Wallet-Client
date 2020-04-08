@@ -1,5 +1,23 @@
 primary-blockchain/primary-env
-*cache__
+*pycache*
+*pytest_cache*
 .vscode
 *.pyc
 primary-blockchain/backend/env_config.py
+# primary-blockchain/frontend/src/config.js
+primary-blockchain/frontend/package-lock.json
+*.env
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+*node_modules
+*.pnp
+*.pnp.js
+
+# misc
+*.DS_Store
+
+*npm-debug.log*
+*yarn-debug.log*
+*yarn-error.log*

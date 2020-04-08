@@ -1,7 +1,9 @@
 import os
 import random
 import requests
+from backend.config import FRONTEND_ADDRESS
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 from backend.blockchain.blockchain import Blockchain
 from backend.pubsub import PubSub
 from backend.wallet.wallet import Wallet
@@ -9,6 +11,7 @@ from backend.wallet.transaction import Transaction
 from backend.wallet.transaction_pool import TransactionPool
 
 app = Flask(__name__)
+CORS(app, resources={ r"/*": { "origins": f"{FRONTEND_ADDRESS}"} })  # add CORS Policy for all endpoints
 blockchain = Blockchain()
 wallet = Wallet(blockchain)
 transaction_pool = TransactionPool()
@@ -21,6 +24,19 @@ def default_route():
 @app.route("/blockchain")
 def blockchain_route():
     return jsonify(blockchain.serialize_to_json())
+
+@app.route("/blockchain/range")
+def paginate_blockchain_route():
+    # http://localhost:5000/blockchain/range?start={start}&end={end}
+    start = int(request.args.get("start"))
+    end = int(request.args.get("end"))
+    # return reversed list to display most recent first
+    return jsonify(blockchain.serialize_to_json()[::-1][start:end]) 
+
+# fetch len of blockchain to determine pagination num
+@app.route("/blockchain/length")
+def len_blockchain_route():
+    return jsonify(len(blockchain.chain))
 
 @app.route("/blockchain/mine")
 def mine_block_route():
@@ -87,5 +103,13 @@ if os.environ.get("PEER") == "True":
         print("\n -- Successfully synchronized local blockchain instance.")
     except Exception as err:
         print(f"\n -- Error synchronizing local blockchain instance. See: {err}")
+
+# seeded test instance - creates 10 blocks w/2 Tx ea
+if os.environ.get("SEED") == "True":
+    for i in range(10):
+        blockchain.add_block([
+            Transaction(Wallet(),Wallet().address, random.randint(2, 50)).serialize_to_json(),
+            Transaction(Wallet(),Wallet().address, random.randint(2, 50)).serialize_to_json()
+        ])
 
 app.run(port=PORT)
