@@ -45,7 +45,7 @@ const Pool = () => {
                 ))}
             </div>
             <hr />
-            <button onClick={mineBlock}>
+            <button className="btn btn-primary" onClick={mineBlock}>
                 Mine a block.
             </button>
         </div>
