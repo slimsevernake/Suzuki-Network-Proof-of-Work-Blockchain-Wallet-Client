@@ -9,6 +9,8 @@ The cloud blockchain instance is also equipped with a full validation suite, sec
 polling and pagination mechanisms to display blockchain data in a manner more suitable for the end user.
 
 **Development demos:**
+Completed Backend Demo (note: skeletal, incomplete frontend here):
+![Demo](suzuki.gif)
 - Tx Pool Progress Demo: https://streamable.com/x9fdii
 
 **Features:**
