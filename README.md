@@ -11,6 +11,9 @@ polling and pagination mechanisms to display blockchain data in a manner more su
 **Development demos:**
 
 Completed Backend Demo (note: skeletal, incomplete frontend here):
+Watch full with narration [here](https://streamable.com/0f9fxw)
+ 
+ 
 ![Demo](suzuki.gif)
 
 - Tx Pool Progress Demo: [Watch with narration here](https://streamable.com/9chn8k)
