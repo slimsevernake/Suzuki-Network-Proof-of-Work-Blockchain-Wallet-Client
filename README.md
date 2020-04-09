@@ -8,10 +8,10 @@ which broadcasts and updates the blockchain in real-time.
 The cloud blockchain instance is also equipped with a full validation suite, security module, and backend test suite. The frontend utilizes
 polling and pagination mechanisms to display blockchain data in a manner more suitable for the end user.
 
-Development demos:
-- Tx Pool Demo: https://streamable.com/x9fdii
+**Development demos:**
+- Tx Pool Progress Demo: https://streamable.com/x9fdii
 
-Features:
+**Features:**
 - A full Proof-of-Work blockchain with full security validation suite
 - Fully distibuted P2P PubSub model network.
 - Fully integrated cryptocurrency and ledger integration of Tx + UTXO.
