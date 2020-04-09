@@ -9,9 +9,12 @@ The cloud blockchain instance is also equipped with a full validation suite, sec
 polling and pagination mechanisms to display blockchain data in a manner more suitable for the end user.
 
 **Development demos:**
+
 Completed Backend Demo (note: skeletal, incomplete frontend here):
 ![Demo](suzuki.gif)
-- Tx Pool Progress Demo: https://streamable.com/x9fdii
+
+- Tx Pool Progress Demo: [Watch with narration here](https://streamable.com/9chn8k)
+
 
 **Features:**
 - A full Proof-of-Work blockchain with full security validation suite
@@ -65,7 +68,3 @@ Run the backend as a pre-seeded instance with:
 ```
 export SEED=True && python3 -m backend.app
 ```
-
-Development demos:
-- Tx Pool Demo: https://streamable.com/x9fdii
-
